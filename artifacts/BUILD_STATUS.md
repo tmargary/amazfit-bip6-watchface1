@@ -1,5 +1,28 @@
 # Verification — 2026-11-14
 
+## Black-screen investigation, version 0.5.1
+
+- User reports installed 0.5.0 displays black although PNG previews look correct.
+  Inspected the actual 0.5.0 ZAB/ZPK/device.zip: entry bytecode and dial/hand
+  resources exist, but minimum API is 3.0 and the entry lacks the legacy widget
+  bootstrap. The installed official legacy watchface template uses minimum API
+  1.0.0, target 1.0.1. ZPM's compiler selects a different bootstrap at >=2.0.
+- Corrected the project's runtime declaration to match its legacy WatchFace/hmUI
+  API, retaining explicit Bip 6 device targets. Device API maximum 4.2 was
+  incorrectly used as a source-runtime requirement in the initial project.
+  This mismatch is a likely cause, not a confirmed hardware diagnosis.
+- Added build-stage/error logs and isolated optional AOD/complication failures
+  after primary clock creation. Regression checks verify optional native widget
+  failures leave the core clock constructed.
+- Added tools/audit_package.py and npm run audit:package. It rejects the existing
+  0.5.0 package for its stale version and incompatible legacy bootstrap. Future
+  builds audit the actual compiled entry and required packaged resources.
+- Host tests pass. npm run build still fails here during Zeus startup with
+  spawnSync cmd.exe EPERM; no 0.5.1 ZAB was produced in this environment.
+- Rebuild locally, ensure package audit passes, generate a new zeus preview QR,
+  and reinstall. If still black, collect the [Still 0.5.1] messages/framework
+  errors from Zepp developer logs. Awaiting device confirmation/logs.
+
 ## Icon-only complications and hollow hands, version 0.5.0
 
 - Removed all complication text labels. Steps and battery use static identifying

@@ -97,8 +97,15 @@ Verified against official documentation on 2026-11-14:
 - Layout configuration is build-time only. editable=0; there is no on-watch editor.
 - appId=1000000 is a local placeholder. Obtain a unique developer app ID before
   distribution. Do not publish or claim device validation without hardware testing.
-- Runtime minVersion 3.0.0 and target 4.2.0 are declared compatibility requirements,
-  not evidence that a physical watch or simulator has executed this project.
+- Runtime API minimum/compatible are 1.0.0 and target is 1.0.1, matching the
+  official legacy WatchFace/hmUI template. This is distinct from the watch's
+  maximum supported API level 4.2. Never raise the minimum to a device's ceiling
+  without migrating the runtime bindings. In the installed Zeus/ZPM compiler,
+  minimum >=2.0 selects a different bootstrap; the 0.5.0 package was missing
+  the legacy WidgetFactory bootstrap and displayed black on the user's watch.
+  The mismatch is a likely cause; the 0.5.1 change still needs device verification.
+- Clock creation precedes optional date/weather/metric construction. Log errors
+  and isolate optional failures so a complication cannot abort the entire face.
 
 ## Installed tools and commands
 
@@ -112,6 +119,7 @@ Run from repository root (PowerShell or Command Prompt):
 python tools/generate_assets.py
 node tools/validate.cjs
 npm run build
+npm run audit:package
 zeus dev
 zeus preview
 ```
@@ -122,7 +130,10 @@ for real-device validation. Check 12/24-hour format, missing health data, live
   updates, battery endpoints, negative temperatures, Celsius/Fahrenheit, date
   rollover, AOD transitions, hand rotations and clipping, condition updates after
   sync/resume, unknown weather, and moon selection at sunrise/sunset.
-Do not treat host checks as emulator or hardware tests.
+Do not treat host checks as emulator or hardware tests. audit:package inspects
+the latest actual ZAB/ZPK/device.zip, rejects stale versions/runtime mismatches,
+and checks compiled entry/bootstrap and packaged resources. Keep the audit in
+the build script after zeus build; run it before reinstalling a preview.
 
 Workflow documentation:
 https://docs.zepp.com/docs/watchface/watchface-quick-start/

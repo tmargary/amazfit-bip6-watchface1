@@ -18,6 +18,7 @@ Windows and that font. Font files are not bundled.
 python tools/generate_assets.py
 node tools/validate.cjs
 npm run build
+npm run audit:package
 ```
 
 Change watchface/config.js to select minimal or airy, reorder the three readings,
@@ -36,6 +37,12 @@ See artifacts/weather-icons.png for the generated icon set.
 Use zeus dev for a supported simulator and zeus preview for Zepp developer-mode
 installation. Replace the development app ID before distribution. AOD must also
 be enabled in the watch's Display settings.
+
+If you installed 0.5.0 and saw a black screen, rebuild 0.5.1 and generate a fresh
+preview QR code. 0.5.1 corrects the legacy runtime selection and logs rendering
+stages/errors. The device API ceiling (4.2) is separate from this watch face's
+legacy API requirement (1.0). Actual ZAB resources and version are checked by
+audit:package; preview PNGs alone do not demonstrate runtime rendering.
 
 See AGENTS.md for verified capabilities, official sources, conventions and the
 device test checklist. See artifacts/BUILD_STATUS.md for build limitations.

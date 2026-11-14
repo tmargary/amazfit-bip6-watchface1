@@ -8,6 +8,9 @@ const root = path.resolve(__dirname, '..')
 const assets = path.join(root, 'assets/bip-6')
 const manifest = JSON.parse(fs.readFileSync(path.join(root,'app.json')))
 assert.equal(manifest.app.appType,'watchface')
+// This source uses the legacy WatchFace/hmUI globals, not @zos Mini Program APIs.
+// Zeus selects different code-generation paths at minVersion >= 2.0.
+assert.deepEqual(manifest.runtime.apiVersion,{minVersion:'1.0.0',target:'1.0.1',compatible:'1.0.0'})
 assert.equal(manifest.targets['bip-6'].module.watchface.lockscreen,1)
 assert.deepEqual(manifest.targets['bip-6'].platforms.map(p=>p.deviceSource),[9765120,9765121,10158337])
 
@@ -37,12 +40,16 @@ const data={STEP:1,BATTERY:2,WEATHER_CURRENT:3,HEART:4,CAL:5}
 let weatherSnapshot={forecastData:{count:1,data:[{index:0}]},tideData:{count:1,data:[{sunrise:{hour:6,minute:0},sunset:{hour:18,minute:0}}]}}
 const sensorTime={hour:12,minute:0}
 let weatherFailure=false
+let failingWidget=null
+const runtimeLogs=[]
 const ctx=vm.createContext({
+  console:{log(...args){runtimeLogs.push(args)}},
   hmUI:{widget:Object.fromEntries(types.map(t=>[t,t])),
     prop:{MORE:'MORE'},
     show_level:{ONLY_NORMAL:1,ONAL_AOD:2},align:{LEFT:0,CENTER_H:1,RIGHT:2},anim_status:{START:0},
     data_type:data,createWidget(type,options) {
       assert(types.includes(type),'Undeclared widget type')
+      if(type===failingWidget) throw new Error('Simulated native widget failure')
       const widget={...options,widgetType:type}
       widgets.push(widget)
       return {setProperty(prop,values){assert.equal(prop,'MORE');Object.assign(widget,values)}}
@@ -171,4 +178,15 @@ assert.equal(animation.show_level,1)
 for(let i=0;i<animation.anim_size;i++) asset(`${animation.anim_path}/${animation.anim_prefix}_${i}.${animation.anim_ext}`)
 const preview=asset(manifest.app.icon)
 assert.equal(preview.w,266);assert.equal(preview.h,307)
+// A native failure in optional complications must leave the core clock intact.
+vm.runInContext("config.animation=false;config.date=true;config.aod=true;config.metrics=['STEP','BATTERY','WEATHER_CURRENT']",ctx)
+for(const type of ['TEXT_IMG','IMG_DATE']) {
+  widgets.length=0
+  failingWidget=type
+  ctx.face.build()
+  assert.equal(widgets.filter(w=>w.widgetType==='TIME_POINTER').length,2)
+  assert(widgets.some(w=>w.src==='images/analog/dial-awake.png'))
+  assert(runtimeLogs.some(args=>String(args[0]).includes(type==='TEXT_IMG'?'metrics error':'date error')))
+}
+failingWidget=null
 console.log('PASS: hollow hands, pivots/sweep clearance, icon-only complications, all 29 weather codes, day/night boundaries, resume refresh/fallback, date/units, awake/AOD isolation.')

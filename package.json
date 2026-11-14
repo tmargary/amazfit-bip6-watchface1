@@ -1,12 +1,13 @@
 {
   "name": "bip6-modular-watchface",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "zeppos": true,
   "scripts": {
     "assets": "python tools/generate_assets.py",
     "test": "node tools/validate.cjs",
-    "build": "python tools/generate_assets.py && node tools/validate.cjs && zeus build",
+    "audit:package": "python tools/audit_package.py",
+    "build": "python tools/generate_assets.py && node tools/validate.cjs && zeus build && python tools/audit_package.py",
     "dev": "zeus dev",
     "preview": "zeus preview"
   }
