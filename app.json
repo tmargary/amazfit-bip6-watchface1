@@ -1,0 +1,30 @@
+{
+  "configVersion": "v3",
+  "app": {
+    "appId": 1000000,
+    "appName": "Bip 6 Still",
+    "appType": "watchface",
+    "version": { "code": 5, "name": "0.5.0" },
+    "vender": "Local development",
+    "description": "Minimal analog watch face with quiet awake complications",
+    "icon": "images/preview.png"
+  },
+  "permissions": [],
+  "runtime": {
+    "apiVersion": { "minVersion": "3.0.0", "target": "4.2.0", "compatible": "3.0.0" }
+  },
+  "targets": {
+    "bip-6": {
+      "module": { "watchface": { "path": "watchface/index", "main": 1, "editable": 0, "lockscreen": 1 } },
+      "platforms": [
+        { "name": "Bip 6 CN", "deviceSource": 9765120 },
+        { "name": "Bip 6", "deviceSource": 9765121 },
+        { "name": "Bip 6 variant", "deviceSource": 10158337 }
+      ],
+      "designWidth": 390
+    }
+  },
+  "i18n": { "en-US": { "appName": "Bip 6 Still" } },
+  "defaultLanguage": "en-US",
+  "debug": false
+}

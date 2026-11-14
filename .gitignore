@@ -1,0 +1,8 @@
+node_modules/
+dist/
+__pycache__/
+.venv/
+*.log
+.python-deps/
+*.tmp.png
+artifacts/font-probe.png

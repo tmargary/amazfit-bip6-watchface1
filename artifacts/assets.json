@@ -1,0 +1,462 @@
+{
+  "analog/background.png": [
+    390,
+    450
+  ],
+  "analog/celsius.png": [
+    32,
+    30
+  ],
+  "analog/date/0.png": [
+    26,
+    38
+  ],
+  "analog/date/1.png": [
+    26,
+    38
+  ],
+  "analog/date/2.png": [
+    26,
+    38
+  ],
+  "analog/date/3.png": [
+    26,
+    38
+  ],
+  "analog/date/4.png": [
+    26,
+    38
+  ],
+  "analog/date/5.png": [
+    26,
+    38
+  ],
+  "analog/date/6.png": [
+    26,
+    38
+  ],
+  "analog/date/7.png": [
+    26,
+    38
+  ],
+  "analog/date/8.png": [
+    26,
+    38
+  ],
+  "analog/date/9.png": [
+    26,
+    38
+  ],
+  "analog/dial-awake.png": [
+    270,
+    270
+  ],
+  "analog/dial-sleep.png": [
+    270,
+    270
+  ],
+  "analog/fahrenheit.png": [
+    32,
+    30
+  ],
+  "analog/hour-awake.png": [
+    13,
+    81
+  ],
+  "analog/hour-sleep.png": [
+    13,
+    81
+  ],
+  "analog/hub-awake.png": [
+    14,
+    14
+  ],
+  "analog/hub-sleep.png": [
+    14,
+    14
+  ],
+  "analog/icons/BATTERY.png": [
+    18,
+    16
+  ],
+  "analog/icons/CAL.png": [
+    18,
+    16
+  ],
+  "analog/icons/HEART.png": [
+    18,
+    16
+  ],
+  "analog/icons/STEP.png": [
+    18,
+    16
+  ],
+  "analog/icons/WEATHER_CURRENT.png": [
+    18,
+    16
+  ],
+  "analog/labels/BATTERY.png": [
+    76,
+    16
+  ],
+  "analog/labels/CAL.png": [
+    76,
+    16
+  ],
+  "analog/labels/HEART.png": [
+    76,
+    16
+  ],
+  "analog/labels/STEP.png": [
+    76,
+    16
+  ],
+  "analog/labels/WEATHER_CURRENT.png": [
+    76,
+    16
+  ],
+  "analog/metric/0.png": [
+    18,
+    30
+  ],
+  "analog/metric/1.png": [
+    18,
+    30
+  ],
+  "analog/metric/2.png": [
+    18,
+    30
+  ],
+  "analog/metric/3.png": [
+    18,
+    30
+  ],
+  "analog/metric/4.png": [
+    18,
+    30
+  ],
+  "analog/metric/5.png": [
+    18,
+    30
+  ],
+  "analog/metric/6.png": [
+    18,
+    30
+  ],
+  "analog/metric/7.png": [
+    18,
+    30
+  ],
+  "analog/metric/8.png": [
+    18,
+    30
+  ],
+  "analog/metric/9.png": [
+    18,
+    30
+  ],
+  "analog/minus.png": [
+    10,
+    30
+  ],
+  "analog/minute-awake.png": [
+    13,
+    111
+  ],
+  "analog/minute-sleep.png": [
+    13,
+    111
+  ],
+  "analog/month/1.png": [
+    54,
+    20
+  ],
+  "analog/month/10.png": [
+    54,
+    20
+  ],
+  "analog/month/11.png": [
+    54,
+    20
+  ],
+  "analog/month/12.png": [
+    54,
+    20
+  ],
+  "analog/month/2.png": [
+    54,
+    20
+  ],
+  "analog/month/3.png": [
+    54,
+    20
+  ],
+  "analog/month/4.png": [
+    54,
+    20
+  ],
+  "analog/month/5.png": [
+    54,
+    20
+  ],
+  "analog/month/6.png": [
+    54,
+    20
+  ],
+  "analog/month/7.png": [
+    54,
+    20
+  ],
+  "analog/month/8.png": [
+    54,
+    20
+  ],
+  "analog/month/9.png": [
+    54,
+    20
+  ],
+  "analog/percent.png": [
+    28,
+    30
+  ],
+  "analog/weather/cloud.png": [
+    28,
+    24
+  ],
+  "analog/weather/dust.png": [
+    28,
+    24
+  ],
+  "analog/weather/fog.png": [
+    28,
+    24
+  ],
+  "analog/weather/hail.png": [
+    28,
+    24
+  ],
+  "analog/weather/moon-cloud.png": [
+    28,
+    24
+  ],
+  "analog/weather/moon-rain.png": [
+    28,
+    24
+  ],
+  "analog/weather/moon.png": [
+    28,
+    24
+  ],
+  "analog/weather/partly-cloudy.png": [
+    28,
+    24
+  ],
+  "analog/weather/rain.png": [
+    28,
+    24
+  ],
+  "analog/weather/sleet.png": [
+    28,
+    24
+  ],
+  "analog/weather/snow.png": [
+    28,
+    24
+  ],
+  "analog/weather/storm.png": [
+    28,
+    24
+  ],
+  "analog/weather/sun.png": [
+    28,
+    24
+  ],
+  "analog/weather/unknown.png": [
+    28,
+    24
+  ],
+  "animation/pulse_0.png": [
+    32,
+    20
+  ],
+  "animation/pulse_1.png": [
+    32,
+    20
+  ],
+  "animation/pulse_2.png": [
+    32,
+    20
+  ],
+  "animation/pulse_3.png": [
+    32,
+    20
+  ],
+  "animation/pulse_4.png": [
+    32,
+    20
+  ],
+  "animation/pulse_5.png": [
+    32,
+    20
+  ],
+  "animation/pulse_6.png": [
+    32,
+    20
+  ],
+  "animation/pulse_7.png": [
+    32,
+    20
+  ],
+  "aod/0.png": [
+    52,
+    88
+  ],
+  "aod/1.png": [
+    52,
+    88
+  ],
+  "aod/2.png": [
+    52,
+    88
+  ],
+  "aod/3.png": [
+    52,
+    88
+  ],
+  "aod/4.png": [
+    52,
+    88
+  ],
+  "aod/5.png": [
+    52,
+    88
+  ],
+  "aod/6.png": [
+    52,
+    88
+  ],
+  "aod/7.png": [
+    52,
+    88
+  ],
+  "aod/8.png": [
+    52,
+    88
+  ],
+  "aod/9.png": [
+    52,
+    88
+  ],
+  "background.png": [
+    390,
+    450
+  ],
+  "colon-aod.png": [
+    10,
+    88
+  ],
+  "colon.png": [
+    10,
+    88
+  ],
+  "labels/BATTERY.png": [
+    108,
+    14
+  ],
+  "labels/CAL.png": [
+    36,
+    14
+  ],
+  "labels/HEART.png": [
+    60,
+    14
+  ],
+  "labels/STEP.png": [
+    60,
+    14
+  ],
+  "metric/0.png": [
+    18,
+    32
+  ],
+  "metric/1.png": [
+    18,
+    32
+  ],
+  "metric/2.png": [
+    18,
+    32
+  ],
+  "metric/3.png": [
+    18,
+    32
+  ],
+  "metric/4.png": [
+    18,
+    32
+  ],
+  "metric/5.png": [
+    18,
+    32
+  ],
+  "metric/6.png": [
+    18,
+    32
+  ],
+  "metric/7.png": [
+    18,
+    32
+  ],
+  "metric/8.png": [
+    18,
+    32
+  ],
+  "metric/9.png": [
+    18,
+    32
+  ],
+  "preview.png": [
+    266,
+    307
+  ],
+  "time/0.png": [
+    52,
+    88
+  ],
+  "time/1.png": [
+    52,
+    88
+  ],
+  "time/2.png": [
+    52,
+    88
+  ],
+  "time/3.png": [
+    52,
+    88
+  ],
+  "time/4.png": [
+    52,
+    88
+  ],
+  "time/5.png": [
+    52,
+    88
+  ],
+  "time/6.png": [
+    52,
+    88
+  ],
+  "time/7.png": [
+    52,
+    88
+  ],
+  "time/8.png": [
+    52,
+    88
+  ],
+  "time/9.png": [
+    52,
+    88
+  ]
+}
