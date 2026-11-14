@@ -4,68 +4,68 @@
     450
   ],
   "analog/celsius.png": [
-    32,
+    29,
     30
   ],
   "analog/date/0.png": [
-    26,
-    38
+    22,
+    36
   ],
   "analog/date/1.png": [
-    26,
-    38
+    22,
+    36
   ],
   "analog/date/2.png": [
-    26,
-    38
+    22,
+    36
   ],
   "analog/date/3.png": [
-    26,
-    38
+    22,
+    36
   ],
   "analog/date/4.png": [
-    26,
-    38
+    22,
+    36
   ],
   "analog/date/5.png": [
-    26,
-    38
+    22,
+    36
   ],
   "analog/date/6.png": [
-    26,
-    38
+    22,
+    36
   ],
   "analog/date/7.png": [
-    26,
-    38
+    22,
+    36
   ],
   "analog/date/8.png": [
-    26,
-    38
+    22,
+    36
   ],
   "analog/date/9.png": [
-    26,
-    38
+    22,
+    36
   ],
   "analog/dial-awake.png": [
-    270,
-    270
+    320,
+    320
   ],
   "analog/dial-sleep.png": [
-    270,
-    270
+    320,
+    320
   ],
   "analog/fahrenheit.png": [
-    32,
+    29,
     30
   ],
   "analog/hour-awake.png": [
     13,
-    81
+    105
   ],
   "analog/hour-sleep.png": [
     13,
-    81
+    105
   ],
   "analog/hub-awake.png": [
     14,
@@ -76,24 +76,28 @@
     14
   ],
   "analog/icons/BATTERY.png": [
-    18,
-    16
+    21,
+    19
   ],
   "analog/icons/CAL.png": [
-    18,
-    16
+    21,
+    19
+  ],
+  "analog/icons/DATE.png": [
+    21,
+    19
   ],
   "analog/icons/HEART.png": [
-    18,
-    16
+    21,
+    19
   ],
   "analog/icons/STEP.png": [
-    18,
-    16
+    21,
+    19
   ],
   "analog/icons/WEATHER_CURRENT.png": [
-    18,
-    16
+    21,
+    19
   ],
   "analog/labels/BATTERY.png": [
     76,
@@ -116,43 +120,43 @@
     16
   ],
   "analog/metric/0.png": [
-    18,
+    17,
     30
   ],
   "analog/metric/1.png": [
-    18,
+    17,
     30
   ],
   "analog/metric/2.png": [
-    18,
+    17,
     30
   ],
   "analog/metric/3.png": [
-    18,
+    17,
     30
   ],
   "analog/metric/4.png": [
-    18,
+    17,
     30
   ],
   "analog/metric/5.png": [
-    18,
+    17,
     30
   ],
   "analog/metric/6.png": [
-    18,
+    17,
     30
   ],
   "analog/metric/7.png": [
-    18,
+    17,
     30
   ],
   "analog/metric/8.png": [
-    18,
+    17,
     30
   ],
   "analog/metric/9.png": [
-    18,
+    17,
     30
   ],
   "analog/minus.png": [
@@ -161,118 +165,122 @@
   ],
   "analog/minute-awake.png": [
     13,
-    111
+    141
   ],
   "analog/minute-sleep.png": [
     13,
-    111
+    141
   ],
   "analog/month/1.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/10.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/11.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/12.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/2.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/3.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/4.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/5.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/6.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/7.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/8.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/month/9.png": [
-    54,
-    20
+    48,
+    22
   ],
   "analog/percent.png": [
-    28,
+    26,
     30
   ],
+  "analog/second-awake.png": [
+    7,
+    158
+  ],
   "analog/weather/cloud.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/dust.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/fog.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/hail.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/moon-cloud.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/moon-rain.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/moon.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/partly-cloudy.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/rain.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/sleet.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/snow.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/storm.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/sun.png": [
-    28,
-    24
+    30,
+    26
   ],
   "analog/weather/unknown.png": [
-    28,
-    24
+    30,
+    26
   ]
 }

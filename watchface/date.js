@@ -1,4 +1,7 @@
+import { image } from './graphics'
+
 export function createDate(layout) {
+  image('images/analog/icons/DATE.png',layout.date.iconX,layout.date.iconY,hmUI.show_level.ONLY_NORMAL)
   const months = Array.from({ length: 12 }, (_, i) => `images/analog/month/${i + 1}.png`)
   const digits = Array.from({ length: 10 }, (_, i) => `images/analog/date/${i}.png`)
   hmUI.createWidget(hmUI.widget.IMG_DATE, {

@@ -1,5 +1,71 @@
 # Verification — 2026-11-14
 
+## Temperature headroom and larger icons, version 0.5.5
+
+- User reports a slightly clipped top edge on the on-device Celsius reading.
+  Source number/unit glyphs were cropped flush to their top row. Added two fully
+  transparent guard rows at top and bottom, with 30 px metric/unit cells and
+  matching widgets. Date digits/months also receive guard rows. Visible text
+  positions are preserved by adjusting the widget origins for the padding.
+- Kept a gap between the weather icon and temperature widget; checked that no
+  new icon frame overlaps the reading. This is a source-level clipping fix and
+  needs a fresh on-device installation to confirm the reported symptom is gone.
+- Enlarged calendar/health/battery icons to 21 x 19 and weather icons to 30 x 26.
+  Added a calendar beside the month to give all four corners an icon; hands,
+  typography sizes and dial proportions are unchanged.
+- Regression checks inspect transparent alpha guard rows on every digit/month/
+  unit, widget heights, icon/temperature separation and full hand-sweep clearance.
+- Assets regenerated and all host checks passed; reviewed the awake/AOD preview.
+  Zeus startup still fails with spawnSync cmd.exe EPERM in this environment, so
+  no 0.5.5 package was produced here. The existing dist package is 0.5.4; rebuild
+  locally and install from a fresh QR code to verify the clipping fix on hardware.
+
+## Thicker hands/dots and slightly larger information, version 0.5.4
+
+- Increased awake hour blade from 7.2 to 8.4 px, minute outline from 8 to 10 px
+  with a 5 px transparent slot, and red needle from 1.5 to 2.2 px. AOD strokes
+  were also modestly thickened while preserving the hollow minute and no seconds.
+- Dot radii increased slightly: awake 3.6/2.3 px and AOD 2.8/1.9 px. Graphics now
+  use 4x supersampling, with unchanged native pointer pivots and lengths.
+- Following the user's next adjustment, enlarged readings from 20 to 22 px, date
+  numerals from 24 to 26 px, month from 11 to 12 px and icons slightly. The 300 px
+  clock remains dominant. Right-hand icons retain alignment with their values.
+- Regenerated resources and design previews; these are not device screenshots.
+  Hardware confirmation of runtime rendering and rotated-edge appearance remains
+  outstanding. Source antialiasing cannot guarantee native rotation filtering.
+- Asset generation and host checks passed, including the enlarged text's full
+  hand-sweep clearance. Zeus startup still fails with spawnSync cmd.exe EPERM,
+  so no 0.5.4 ZAB was produced here. Build locally and generate a fresh preview QR.
+
+## Larger clock, smaller corner information, version 0.5.3
+
+- Enlarged the dot circle from 234 to 300 px diameter (about 28%) and extended
+  hour/minute/second hands from 66/96/100 to 86/126/132 px. Updated native pivots
+  and generated pointer dimensions together, retaining hollow minute/red seconds.
+- Reduced reading type from 24 to 20 px, date numerals from 32 to 24 px and
+  month type from 13 to 11 px. Smaller corner icons and new placements keep the
+  clock visually dominant. Both awake and AOD previews were regenerated.
+- Host checks pass, including complete hand sweep clearance against all corner
+  rectangles/icons with a 2 px margin, glyph bounds, unit widths and AOD isolation.
+- npm run build passed assets/host tests, then Zeus startup failed with the
+  existing spawnSync cmd.exe EPERM error. No 0.5.3 ZAB was produced here.
+  Rebuild locally and generate a fresh preview QR. Device testing is outstanding.
+
+## Red awake seconds hand, version 0.5.2
+
+- Added a fine red needle and small circular counterweight using documented
+  TIME_POINTER.second_* fields; the circular hub now has a red center pin.
+- Python renders the same geometry into actual pointer resources and previews.
+  The second hand appears only awake; no second fields are supplied to AOD.
+- config.secondHand can disable it. No JS timer or frame animation is used.
+- Host checks cover pointer pivots, full sweep clearance and awake/AOD isolation,
+  including disabling seconds. Package audit requires the second pointer asset.
+- This retains the legacy runtime correction from 0.5.1; that correction still
+  requires hardware verification. Previews are design renders, not screenshots.
+- Asset generation and host checks passed. Zeus build again failed at startup
+  with spawnSync cmd.exe EPERM; no 0.5.2 package was produced here. Build locally
+  and scan a fresh preview QR rather than reinstalling the existing 0.5.0 ZAB.
+
 ## Black-screen investigation, version 0.5.1
 
 - User reports installed 0.5.0 displays black although PNG previews look correct.

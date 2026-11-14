@@ -44,7 +44,8 @@ Verified against official documentation on 2026-11-14:
 - watchface/clock.js, date.js, metrics.js, weather.js, graphics.js, animation.js:
   separate UI modules.
 - Current design: Still, analog hour/minute hands and 12 dot indices. Default
-  minimal layout; airy moves the dial slightly upward. No second hand.
+  minimal layout; airy moves the dial slightly downward. A slim red seconds hand
+  with a small counterweight appears only awake. config.secondHand can disable it.
 - Visual direction: Apple Watch inspired restraint, original graphics. Awake has
   neutral white hands, a thicker rounded hour hand, orange month/center accents,
   real Segoe UI numerals, and subtle coral/green/blue complication icons.
@@ -77,6 +78,29 @@ Verified against official documentation on 2026-11-14:
   transparent hollow minute blade. Hub is a circular rim with a dark core. Use
   shared draw_hand/draw_hub geometry for resources and previews. Preserve the
   hollow alpha channel rather than painting the slot black.
+- Seconds use the documented second_* fields on the same native TIME_POINTER
+  widget, never a JS animation/timer. The second pointer asset is 7 x 158 with
+  pivot (3,138); its sweep must stay clear of the corner complications. Never
+  supply second_path or second_* fields to the AOD clock.
+- Current proportions: dot circle diameter 300 px in a 320 x 320 resource,
+  hour/minute/second lengths 86/126/132 px. Pivots are (6,96), (6,132),
+  (3,138). Metric type is 22 px, date numerals 26 px, month 12 px. Icons are
+  21 x 19 (calendar/health/battery) and 30 x 26 (weather). A calendar mark sits
+  next to the month, so all four corners have an identifying icon.
+  Preview geometry must match.
+- Rasterized digits, month images and unit images must retain two transparent
+  guard rows at the top and bottom. Do not crop ink flush to an image edge.
+  Metric cells/widgets are 30 px high; date digit cells are 36 px high. Widget
+  coordinates account for padding so visible baselines remain unchanged. Weather
+  icon and temperature widget must have at least a 2 px vertical gap. Host checks
+  inspect alpha rows, cell/widget heights and icon separation to prevent clipping.
+- Graphics use 4x supersampling. Awake hour blade is 8.4 px wide; hollow minute
+  outer width is 10 px with a 5 px transparent slot (2.5 px walls). The red needle
+  is 2.2 px wide. Dot radii are 3.6/2.3 px (cardinal/other) awake and 2.8/1.9 px
+  in AOD. Preserve at least a two-pixel minute outline awake for legible rotation.
+- Clearance tests use circle-to-rectangle distances with a 2 px margin for every
+  complication and icon, because corner information can share the dial's vertical
+  extent while staying outside the complete hand sweep.
 - tools/analog_assets.py generates supersampled original hands, dots and icons.
   tools/system_font.py rasterizes installed Segoe UI through Windows GDI using
   ctypes. No font file is copied into the project. Asset generation requires

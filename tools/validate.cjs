@@ -34,6 +34,16 @@ function bounds(x,y,size) {
   assert(x>=0 && y>=0 && x+size.w<=390 && y+size.h<=450,`Outside screen: ${x},${y}`)
 }
 
+function paddedGlyph(src) {
+  const glyph=asset(src)
+  for(const y of [0,1,glyph.h-2,glyph.h-1]) {
+    for(let x=0;x<glyph.w;x++) {
+      assert.equal(glyph.pixels[y*(1+glyph.w*4)+1+x*4+3],0,`${src} needs transparent top/bottom guard rows`)
+    }
+  }
+  return glyph
+}
+
 const widgets=[]
 const types=['IMG','TIME_POINTER','TEXT_IMG','IMG_DATE','IMG_ANIM','WIDGET_DELEGATE']
 const data={STEP:1,BATTERY:2,WEATHER_CURRENT:3,HEART:4,CAL:5}
@@ -88,20 +98,35 @@ for(const layout of ['minimal','airy']) {
     assert.equal(weather.negative_image,'images/analog/minus.png')
     assert(weather.unit_en.endsWith('/celsius.png'))
     assert(weather.imperial_unit_en.endsWith('/fahrenheit.png'))
+    const complications=metrics.map(w=>({x:w.x,y:w.y,w:w.w,h:w.h}))
+    for(const w of widgets) {
+      if(w.src && /\/(icons|weather)\//.test(w.src)) complications.push({x:w.x,y:w.y,...asset(w.src)})
+      if(w.widgetType==='IMG_DATE') {
+        complications.push({x:w.month_startX,y:w.month_startY,...asset(w.month_en_array[0])})
+        const size=asset(w.day_en_array[0])
+        complications.push({x:w.day_startX,y:w.day_startY,w:size.w*2+w.day_space,h:size.h})
+      }
+    }
     for(const w of widgets) {
       assert([1,2].includes(w.show_level))
       if(w.src) bounds(w.x,w.y,asset(w.src))
       for(const key of ['font_array','month_en_array','day_en_array']) {
         if(w[key]) {
           assert.equal(w[key].length,key==='month_en_array'?12:10)
-          w[key].forEach(asset)
+          w[key].forEach(paddedGlyph)
         }
       }
       for(const key of ['unit_en','unit_sc','unit_tc','imperial_unit_en','imperial_unit_sc','imperial_unit_tc','negative_image']) {
-        if(w[key]) asset(w[key])
+        if(w[key]) paddedGlyph(w[key])
       }
       if(w.widgetType==='TEXT_IMG') {
         bounds(w.x,w.y,{w:w.w,h:w.h})
+        assert(w.h>=asset(w.font_array[0]).h,'Widget must fit padded digit cells')
+        if(w.type===data.WEATHER_CURRENT) {
+          assert(w.h>=asset(w.unit_en).h && w.h>=asset(w.imperial_unit_en).h,'Temperature must fit both padded units')
+          const icon=widgets.find(icon=>icon.src && icon.src.includes('/weather/'))
+          assert(icon.y+asset(icon.src).h+2<=w.y,'Weather icon must not cover temperature')
+        }
         const digits=w.type===data.STEP?5:3
         const suffix=w.type===data.WEATHER_CURRENT?asset(w.imperial_unit_en).w+asset(w.negative_image).w:w.type===data.BATTERY?asset(w.unit_en).w:0
         assert(digits*asset(w.font_array[0]).w+(digits-1)+suffix<=w.w,'Worst-case reading must fit')
@@ -115,8 +140,9 @@ for(const layout of ['minimal','airy']) {
         assert(w.day_startY+size.h<=112)
       }
       if(w.widgetType==='TIME_POINTER') {
-        assert.equal(w.second_path,undefined)
-        for(const hand of ['hour','minute']) {
+        if(w.show_level===2) assert.equal(w.second_path,undefined,'No seconds hand in AOD')
+        else assert.equal(w.second_path,'images/analog/second-awake.png')
+        for(const hand of w.second_path?['hour','minute','second']:['hour','minute']) {
           const size=asset(w[hand+'_path'])
           assert.equal(size.w%2,1,'Pointer cutouts must have odd widths')
           const px=w[hand+'_posX'],py=w[hand+'_posY']
@@ -124,15 +150,16 @@ for(const layout of ['minimal','airy']) {
           const radius=Math.hypot(Math.max(px,size.w-px),Math.max(py,size.h-py))
           bounds(w[hand+'_centerX']-radius,w[hand+'_centerY']-radius,{w:radius*2,h:radius*2})
           // Complications and date stay outside the complete hand sweep.
-          assert(w[hand+'_centerY']-radius>112)
-          assert(w[hand+'_centerY']+radius<350)
-          for(const metric of metrics) {
-            const top=metric.y, bottom=metric.y+metric.h
-            assert(bottom<w[hand+'_centerY']-radius || top>w[hand+'_centerY']+radius,'Reading intersects hand sweep')
+          for(const rect of complications) {
+            const cx=w[hand+'_centerX'],cy=w[hand+'_centerY']
+            const nearestX=Math.max(rect.x,Math.min(cx,rect.x+rect.w))
+            const nearestY=Math.max(rect.y,Math.min(cy,rect.y+rect.h))
+            assert(Math.hypot(cx-nearestX,cy-nearestY)>radius+2,'Complication intersects full hand sweep')
           }
         }
       }
     }
+    if(enabled) assert(widgets.some(w=>w.src==='images/analog/icons/DATE.png' && w.show_level===1))
   }
 }
 // Condition mapping, missing data, sunset boundaries and refresh after sync.
@@ -189,4 +216,8 @@ for(const type of ['TEXT_IMG','IMG_DATE']) {
   assert(runtimeLogs.some(args=>String(args[0]).includes(type==='TEXT_IMG'?'metrics error':'date error')))
 }
 failingWidget=null
+widgets.length=0
+vm.runInContext('config.secondHand=false',ctx)
+ctx.face.build()
+assert(widgets.filter(w=>w.widgetType==='TIME_POINTER').every(w=>w.second_path===undefined))
 console.log('PASS: hollow hands, pivots/sweep clearance, icon-only complications, all 29 weather codes, day/night boundaries, resume refresh/fallback, date/units, awake/AOD isolation.')

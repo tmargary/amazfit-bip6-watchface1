@@ -34,13 +34,13 @@ def audit(filename):
                         errors.append('Missing compiled watch face entry')
                     elif b'WidgetFactory' not in device.read(entries[0]):
                         errors.append('Compiled entry lacks the legacy widget runtime bootstrap')
-                    required = ['background.png']
+                    required = ['background.png', 'second-awake.png']
                     for state in ('awake', 'sleep'):
                         required += [f'{part}-{state}.png' for part in ('dial', 'hour', 'minute', 'hub')]
                     required += [f'{style}/{i}.png' for style in ('metric','date') for i in range(10)]
                     required += [f'month/{i}.png' for i in range(1,13)]
                     required += [f'weather/{n}.png' for n in ('sun','moon','partly-cloudy','cloud','rain','snow','storm','sleet','hail','fog','dust','unknown','moon-cloud','moon-rain')]
-                    required += [f'icons/{n}.png' for n in ('STEP','BATTERY','HEART','CAL')]
+                    required += [f'icons/{n}.png' for n in ('DATE','STEP','BATTERY','HEART','CAL')]
                     required += ['minus.png','percent.png','celsius.png','fahrenheit.png']
                     for relative in required:
                         asset = 'assets/images/analog/' + relative

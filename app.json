@@ -4,7 +4,7 @@
     "appId": 1000000,
     "appName": "Bip 6 Still",
     "appType": "watchface",
-    "version": { "code": 6, "name": "0.5.1" },
+    "version": { "code": 10, "name": "0.5.5" },
     "vender": "Local development",
     "description": "Minimal analog watch face with quiet awake complications",
     "icon": "images/preview.png"

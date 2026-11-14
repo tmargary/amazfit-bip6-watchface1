@@ -2,8 +2,16 @@
 
 Minimal analog watch face with crisp white hands, twelve dots and a black canvas.
 On wake, date and temperature occupy the upper corners; steps and battery occupy
-the lower corners. AOD shows only dim hands and dots. No second hand or
-default animation. The date and readings stay outside the hands' full sweep.
+the lower corners. A slim red seconds hand with a small counterweight runs only
+when awake. AOD shows only dim hour/minute hands and dots. No default animation.
+The date and readings stay outside the hands' full sweep.
+
+The larger 300 px dial leads the design; corner details use 22 px readings,
+26 px date numerals and compact icons. The hollow minute hand and red seconds hand
+scale with the dial. AOD uses the same larger clock geometry.
+Slightly thicker hands and dots, rendered with 4x supersampling, improve visibility.
+Larger corner icons include a calendar beside the month. Padded digit/unit assets
+and taller widgets protect the temperature and other readings from edge clipping.
 
 The refined visual style uses real Segoe UI numerals, an orange month/center accent,
 and icon-only complications. Rounded hands have a circular hub and transparent
@@ -23,6 +31,7 @@ npm run audit:package
 
 Change watchface/config.js to select minimal or airy, reorder the three readings,
 or disable date/AOD. HEART and CAL can replace a reading. Rebuild after changes.
+Set secondHand to false to hide the awake seconds hand.
 This is not on-watch customization. Animation remains available but off by default.
 
 See artifacts/preview-comparison.png for awake (left) and AOD (right). Sample
@@ -38,8 +47,8 @@ Use zeus dev for a supported simulator and zeus preview for Zepp developer-mode
 installation. Replace the development app ID before distribution. AOD must also
 be enabled in the watch's Display settings.
 
-If you installed 0.5.0 and saw a black screen, rebuild 0.5.1 and generate a fresh
-preview QR code. 0.5.1 corrects the legacy runtime selection and logs rendering
+If you installed 0.5.0 and saw a black screen, rebuild 0.5.2 and generate a fresh
+preview QR code. This includes the 0.5.1 legacy runtime correction and logs rendering
 stages/errors. The device API ceiling (4.2) is separate from this watch face's
 legacy API requirement (1.0). Actual ZAB resources and version are checked by
 audit:package; preview PNGs alone do not demonstrate runtime rendering.

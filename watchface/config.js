@@ -2,6 +2,7 @@
 export const config = {
   layout: 'minimal',
   animation: false,
+  secondHand: true,
   aod: true,
   date: true,
   metrics: ['STEP', 'BATTERY', 'WEATHER_CURRENT']
@@ -9,21 +10,21 @@ export const config = {
 
 export const layouts = {
   minimal: {
-    center: { x: 195, y: 225 }, dial: { x: 60, y: 90 },
-    date: { monthX: 52, dayX: 52, monthY: 49, dayY: 73 },
+    center: { x: 195, y: 225 }, dial: { x: 35, y: 65 },
+    date: { monthX: 71, dayX: 42, monthY: 36, dayY: 57, iconX: 42, iconY: 34 },
     slots: [
-      { x: 52, y: 378, w: 130, h: 30, iconX: 52, iconY: 351, align: 'left' },
-      { x: 230, y: 378, w: 110, h: 30, iconX: 322, iconY: 351, align: 'right' },
-      { x: 230, y: 78, w: 110, h: 30, iconX: 312, iconY: 51, align: 'right' }
+      { x: 42, y: 400, w: 112, h: 30, iconX: 42, iconY: 378, align: 'left' },
+      { x: 246, y: 400, w: 102, h: 30, iconX: 327, iconY: 378, align: 'right' },
+      { x: 246, y: 63, w: 102, h: 30, iconX: 318, iconY: 31, align: 'right' }
     ]
   },
   airy: {
-    center: { x: 195, y: 219 }, dial: { x: 60, y: 84 },
-    date: { monthX: 52, dayX: 52, monthY: 49, dayY: 73 },
+    center: { x: 195, y: 229 }, dial: { x: 35, y: 69 },
+    date: { monthX: 71, dayX: 42, monthY: 36, dayY: 57, iconX: 42, iconY: 34 },
     slots: [
-      { x: 52, y: 378, w: 130, h: 30, iconX: 52, iconY: 351, align: 'left' },
-      { x: 230, y: 378, w: 110, h: 30, iconX: 322, iconY: 351, align: 'right' },
-      { x: 230, y: 78, w: 110, h: 30, iconX: 312, iconY: 51, align: 'right' }
+      { x: 42, y: 400, w: 112, h: 30, iconX: 42, iconY: 378, align: 'left' },
+      { x: 246, y: 400, w: 102, h: 30, iconX: 327, iconY: 378, align: 'right' },
+      { x: 246, y: 63, w: 102, h: 30, iconX: 318, iconY: 31, align: 'right' }
     ]
   }
 }
