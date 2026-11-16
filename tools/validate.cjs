@@ -45,14 +45,23 @@ function paddedGlyph(src) {
 }
 
 const widgets=[]
-const types=['IMG','TIME_POINTER','TEXT_IMG','IMG_DATE','IMG_ANIM','WIDGET_DELEGATE']
+const types=['IMG','TIME_POINTER','TEXT_IMG','IMG_DATE','IMG_ANIM','WIDGET_DELEGATE','IMG_CLICK','BUTTON']
 const data={STEP:1,BATTERY:2,WEATHER_CURRENT:3,HEART:4,CAL:5}
 let weatherSnapshot={forecastData:{count:1,data:[{index:0}]},tideData:{count:1,data:[{sunrise:{hour:6,minute:0},sunset:{hour:18,minute:0}}]}}
 const sensorTime={hour:12,minute:0}
+let batteryValue=75, batteryFailure=false
+const batteryListeners=[]
+const batterySensor={
+  get current(){if(batteryFailure) throw new Error('Battery unavailable');return batteryValue},
+  addEventListener(event,callback){assert.equal(event,'CHANGE');batteryListeners.push(callback)}
+}
 let weatherFailure=false
 let failingWidget=null
 const runtimeLogs=[]
+const launches=[]
+const calendarLauncher={startApp(options){launches.push(JSON.parse(JSON.stringify(options)))}}
 const ctx=vm.createContext({
+  hmApp:calendarLauncher,
   console:{log(...args){runtimeLogs.push(args)}},
   hmUI:{widget:Object.fromEntries(types.map(t=>[t,t])),
     prop:{MORE:'MORE'},
@@ -64,7 +73,8 @@ const ctx=vm.createContext({
       widgets.push(widget)
       return {setProperty(prop,values){assert.equal(prop,'MORE');Object.assign(widget,values)}}
     }},
-  hmSensor:{id:{WEATHER:'WEATHER',TIME:'TIME'},createSensor(id){
+  hmSensor:{id:{WEATHER:'WEATHER',TIME:'TIME',BATTERY:'BATTERY'},event:{CHANGE:'CHANGE'},createSensor(id){
+    if(id==='BATTERY') return batterySensor
     if(id==='TIME') return sensorTime
     assert.equal(id,'WEATHER')
     return {getForecastWeather(){if(weatherFailure) throw new Error('Offline');return weatherSnapshot}}
@@ -72,7 +82,7 @@ const ctx=vm.createContext({
   WatchFace(face){ctx.face=face},App(){}
 })
 for(const file of ['app.js','watchface/config.js','watchface/graphics.js','watchface/clock.js','watchface/weather.js',
-  'watchface/metrics.js','watchface/date.js','watchface/animation.js','watchface/index.js']) {
+  'watchface/metrics.js','watchface/date.js','watchface/animation.js','watchface/shortcuts.js','watchface/battery.js','watchface/index.js']) {
   const source=fs.readFileSync(path.join(root,file),'utf8').replace(/^import .*$/gm,'').replace(/^export /gm,'')
   new vm.Script(source,{filename:file}).runInContext(ctx)
 }
@@ -94,19 +104,50 @@ for(const layout of ['minimal','airy']) {
     const condition=widgets.find(w=>w.src && w.src.includes('/weather/'))
     assert.equal(condition.src,'images/analog/weather/partly-cloudy.png')
     assert.equal(condition.show_level,1)
+    const taps=widgets.filter(w=>w.widgetType==='IMG_CLICK')
+    assert.deepEqual(taps.map(w=>w.type),[data.STEP,data.BATTERY,data.WEATHER_CURRENT])
+    assert(taps.every(w=>w.show_level===1 && w.src==='images/analog/tap.png'))
+    const calendar=widgets.find(w=>w.widgetType==='BUTTON')
+    assert.equal(!!calendar,enabled,'Date tap is present only when date is enabled')
+    if(calendar) {
+      assert.equal(calendar.show_level,1)
+      assert.equal(calendar.text,'')
+      assert.equal(calendar.normal_src,'images/analog/tap.png')
+      assert.equal(calendar.press_src,'images/analog/tap.png')
+      assert(calendar.w>=44 && calendar.h>=44)
+      bounds(calendar.x,calendar.y,{w:calendar.w,h:calendar.h})
+      const date=widgets.find(w=>w.widgetType==='IMG_DATE')
+      assert(calendar.x<=date.month_startX && calendar.y<=date.month_startY)
+      assert(calendar.x+calendar.w>=date.month_startX+48)
+      assert(calendar.x+calendar.w>=date.day_startX+45 && calendar.y+calendar.h>=date.day_startY+36)
+      for(const tap of taps) assert(calendar.x+calendar.w<=tap.x || tap.x+tap.w<=calendar.x || calendar.y+calendar.h<=tap.y || tap.y+tap.h<=calendar.y)
+    }
+    for(const tap of taps) {
+      bounds(tap.x,tap.y,{w:tap.w,h:tap.h})
+      assert(tap.w>=44 && tap.h>=44,'Native tap area should be usable')
+      const metric=metrics.find(w=>w.type===tap.type)
+      assert(tap.x<=metric.x && tap.y<=metric.y && tap.x+tap.w>=metric.x+metric.w && tap.y+tap.h>=metric.y+metric.h,'Tap region must cover the full reading')
+    }
+    for(let a=0;a<taps.length;a++) for(let b=a+1;b<taps.length;b++) {
+      const x=taps[a],y=taps[b]
+      assert(x.x+x.w<=y.x || y.x+y.w<=x.x || x.y+x.h<=y.y || y.y+y.h<=x.y,'Tap areas must not overlap')
+    }
+    const overlay=asset('images/analog/tap.png')
+    assert.equal(overlay.pixels[4],0,'Shortcut image must be fully transparent')
     const weather=metrics.find(w=>w.type===data.WEATHER_CURRENT)
     assert.equal(weather.negative_image,'images/analog/minus.png')
     assert(weather.unit_en.endsWith('/celsius.png'))
     assert(weather.imperial_unit_en.endsWith('/fahrenheit.png'))
     const complications=metrics.map(w=>({x:w.x,y:w.y,w:w.w,h:w.h}))
     for(const w of widgets) {
-      if(w.src && /\/(icons|weather)\//.test(w.src)) complications.push({x:w.x,y:w.y,...asset(w.src)})
+      if(w.src && /\/(icons|weather|battery)\//.test(w.src)) complications.push({x:w.x,y:w.y,...asset(w.src)})
       if(w.widgetType==='IMG_DATE') {
         complications.push({x:w.month_startX,y:w.month_startY,...asset(w.month_en_array[0])})
         const size=asset(w.day_en_array[0])
         complications.push({x:w.day_startX,y:w.day_startY,w:size.w*2+w.day_space,h:size.h})
       }
     }
+    for(const tap of taps) assert(widgets.indexOf(tap)>widgets.indexOf(metrics.find(w=>w.type===tap.type)),'Shortcuts must be above the readings')
     for(const w of widgets) {
       assert([1,2].includes(w.show_level))
       if(w.src) bounds(w.x,w.y,asset(w.src))
@@ -195,11 +236,23 @@ for(const mode of ['awake','sleep']) {
   assert.equal(alpha(6,50),0,'Minute hand interior must be transparent')
   assert(Array.from({length:6},(_,x)=>alpha(x,50)).some(a=>a>0),'Hollow minute hand requires an outline')
 }
+// AOD differs in luminance, not the hour/minute silhouette or hollow outline.
+for(const kind of ['hour','minute']) {
+  const awake=asset(`images/analog/${kind}-awake.png`)
+  const sleep=asset(`images/analog/${kind}-sleep.png`)
+  assert.equal(awake.w,sleep.w)
+  assert.equal(awake.h,sleep.h)
+  for(let y=0;y<awake.h;y++) for(let x=0;x<awake.w;x++) {
+    const alpha=y*(1+awake.w*4)+1+x*4+3
+    assert.equal(awake.pixels[alpha],sleep.pixels[alpha],`${kind} thickness must match awake and AOD`)
+  }
+}
 // Optional metric substitutions and animation remain supported, normal-display only.
 widgets.length=0
 vm.runInContext("config.metrics=['STEP','HEART','CAL'];config.animation=true",ctx)
 ctx.face.build()
 assert.deepEqual(widgets.filter(w=>w.widgetType==='TEXT_IMG').map(w=>w.type),[1,4,5])
+assert.deepEqual(widgets.filter(w=>w.widgetType==='IMG_CLICK').map(w=>w.type),[1,4,5])
 const animation=widgets.find(w=>w.widgetType==='IMG_ANIM')
 assert.equal(animation.show_level,1)
 for(let i=0;i<animation.anim_size;i++) asset(`${animation.anim_path}/${animation.anim_prefix}_${i}.${animation.anim_ext}`)
@@ -207,17 +260,90 @@ const preview=asset(manifest.app.icon)
 assert.equal(preview.w,266);assert.equal(preview.h,307)
 // A native failure in optional complications must leave the core clock intact.
 vm.runInContext("config.animation=false;config.date=true;config.aod=true;config.metrics=['STEP','BATTERY','WEATHER_CURRENT']",ctx)
-for(const type of ['TEXT_IMG','IMG_DATE']) {
+for(const type of ['TEXT_IMG','IMG_DATE','IMG_CLICK','BUTTON']) {
   widgets.length=0
   failingWidget=type
   ctx.face.build()
   assert.equal(widgets.filter(w=>w.widgetType==='TIME_POINTER').length,2)
   assert(widgets.some(w=>w.src==='images/analog/dial-awake.png'))
-  assert(runtimeLogs.some(args=>String(args[0]).includes(type==='TEXT_IMG'?'metrics error':'date error')))
+  const failureLabel={TEXT_IMG:'metrics error',IMG_DATE:'date error',IMG_CLICK:'shortcuts error',BUTTON:'calendar shortcut error'}[type]
+  assert(runtimeLogs.some(args=>String(args[0]).includes(failureLabel)))
 }
 failingWidget=null
 widgets.length=0
 vm.runInContext('config.secondHand=false',ctx)
 ctx.face.build()
 assert(widgets.filter(w=>w.widgetType==='TIME_POINTER').every(w=>w.second_path===undefined))
+widgets.length=0
+vm.runInContext('config.shortcuts=false',ctx)
+ctx.face.build()
+assert(!widgets.some(w=>w.widgetType==='IMG_CLICK'))
+assert(!widgets.some(w=>w.widgetType==='BUTTON'))
+widgets.length=0
+vm.runInContext('config.shortcuts=true',ctx)
+data.BATTERY=0
+ctx.face.build()
+assert(widgets.some(w=>w.widgetType==='IMG_CLICK' && w.type===0),'Native action zero is a valid enum value')
+data.BATTERY=2
+// Dispatch happens on tap only; native launch failures cannot break the clock.
+assert.equal(launches.length,0,'Calendar must not launch while building the face')
+const calendar=widgets.find(w=>w.widgetType==='BUTTON')
+assert.equal(calendar.click_func(),true)
+assert.deepEqual(launches,[{appid:1,url:'ScheduleCalScreen',native:true}])
+ctx.hmApp={startApp(){throw new Error('Unavailable native screen')}}
+assert.equal(calendar.click_func(),false)
+ctx.hmApp=undefined
+assert.equal(calendar.click_func(),false)
+ctx.hmApp=calendarLauncher
+widgets.length=0
+vm.runInContext('config.calendarShortcut=false',ctx)
+ctx.face.build()
+assert(!widgets.some(w=>w.widgetType==='BUTTON'))
+widgets.length=0
+vm.runInContext("config.metrics=['WEATHER_CURRENT','STEP','BATTERY']",ctx)
+delete data.BATTERY
+ctx.face.build()
+const reordered=widgets.filter(w=>w.widgetType==='IMG_CLICK')
+assert.deepEqual(reordered.map(w=>w.type),[data.WEATHER_CURRENT,data.STEP])
+assert.equal(reordered[0].x,42)
+assert.equal(reordered[1].x,246)
+data.BATTERY=2
+// Charge follows sensor events, with no writes while paused or destroyed.
+widgets.length=0
+vm.runInContext("config.metrics=['STEP','BATTERY','WEATHER_CURRENT']",ctx)
+ctx.face.build()
+const batteryIcon=widgets.find(w=>w.src && w.src.includes('/battery/'))
+const batteryDelegate=widgets.find(w=>w.widgetType==='WIDGET_DELEGATE' && w.pause_call)
+assert.equal(batteryIcon.src,'images/analog/battery/75.png')
+assert.equal(batteryIcon.show_level,1)
+const changeBattery=()=>batteryListeners.forEach(callback=>callback())
+for(const value of [0,1,25,50,75,99,100,null,undefined,NaN,-1,101,'75']) {
+  batteryValue=value
+  changeBattery()
+  const expected=typeof value==='number' && Number.isFinite(value) && value>=0 && value<=100 ? value : 'unknown'
+  assert.equal(batteryIcon.src,`images/analog/battery/${expected}.png`)
+  assert.equal(batteryIcon.w,21);assert.equal(batteryIcon.h,19)
+}
+batteryFailure=true;changeBattery()
+assert(batteryIcon.src.endsWith('/unknown.png'))
+batteryFailure=false;batteryValue=75;changeBattery()
+batteryDelegate.pause_call();batteryValue=50;changeBattery()
+assert(batteryIcon.src.endsWith('/75.png'))
+batteryDelegate.resume_call()
+assert(batteryIcon.src.endsWith('/50.png'))
+ctx.face.onDestroy();batteryValue=0;changeBattery();batteryDelegate.resume_call()
+assert(batteryIcon.src.endsWith('/50.png'))
+// Generated levels retain their outline and grow monotonically, with distinct
+// empty/full/unavailable states. Compare alpha, not compressed PNG sizes.
+let previousInk=-1
+for(let percent=0;percent<=100;percent++) {
+  const frame=asset(`images/analog/battery/${percent}.png`)
+  assert.equal(frame.w,21);assert.equal(frame.h,19)
+  let ink=0
+  for(let y=0;y<frame.h;y++) for(let x=0;x<frame.w;x++) ink+=frame.pixels[y*(1+frame.w*4)+1+x*4+3]
+  assert(ink>=previousInk,'Battery fill must not shrink as charge rises')
+  previousInk=ink
+}
+assert.notDeepEqual(asset('images/analog/battery/0.png').pixels,asset('images/analog/battery/100.png').pixels)
+assert.notDeepEqual(asset('images/analog/battery/0.png').pixels,asset('images/analog/battery/unknown.png').pixels)
 console.log('PASS: hollow hands, pivots/sweep clearance, icon-only complications, all 29 weather codes, day/night boundaries, resume refresh/fallback, date/units, awake/AOD isolation.')

@@ -5,6 +5,8 @@ export const config = {
   secondHand: true,
   aod: true,
   date: true,
+  shortcuts: true,
+  calendarShortcut: true,
   metrics: ['STEP', 'BATTERY', 'WEATHER_CURRENT']
 }
 

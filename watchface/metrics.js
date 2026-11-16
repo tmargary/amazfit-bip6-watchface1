@@ -9,7 +9,7 @@ export function createMetrics(layout, names) {
     if (metricNames.indexOf(name) < 0) throw new Error('Unsupported metric: ' + name)
     const slot = layout.slots[index]
     if (name === 'WEATHER_CURRENT') createWeatherIcon(slot)
-    else image(`images/analog/icons/${name}.png`, slot.iconX, slot.iconY, hmUI.show_level.ONLY_NORMAL)
+    else if (name !== 'BATTERY') image(`images/analog/icons/${name}.png`, slot.iconX, slot.iconY, hmUI.show_level.ONLY_NORMAL)
     const options = {
       x: slot.x, y: slot.y, w: slot.w, h: slot.h,
       type: hmUI.data_type[name],

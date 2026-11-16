@@ -1,14 +1,18 @@
-"""Rasterize installed Segoe UI with Windows GDI; no font file is copied."""
+"""Rasterize installed system fonts; no font file is copied."""
 import ctypes as C
 from ctypes import wintypes as W
 import os
+import sys
 
 from generate_assets import Canvas
 
 
 def rasterize(text, cap_height, color, scale=3, weight=500):
+    if sys.platform == 'darwin':
+        from mac_font import rasterize as mac_rasterize
+        return mac_rasterize(text, cap_height, color, scale, weight)
     if os.name != 'nt':
-        raise RuntimeError('Asset typography requires Windows and installed Segoe UI.')
+        raise RuntimeError('Asset typography requires macOS or Windows with Segoe UI.')
     gdi = C.WinDLL('gdi32', use_last_error=True)
     class Header(C.Structure):
         _fields_ = [('size',W.DWORD),('width',W.LONG),('height',W.LONG),

@@ -34,7 +34,8 @@ def audit(filename):
                         errors.append('Missing compiled watch face entry')
                     elif b'WidgetFactory' not in device.read(entries[0]):
                         errors.append('Compiled entry lacks the legacy widget runtime bootstrap')
-                    required = ['background.png', 'second-awake.png']
+                    required = ['background.png', 'second-awake.png', 'tap.png']
+                    required += [f'battery/{i}.png' for i in range(101)] + ['battery/unknown.png']
                     for state in ('awake', 'sleep'):
                         required += [f'{part}-{state}.png' for part in ('dial', 'hour', 'minute', 'hub')]
                     required += [f'{style}/{i}.png' for style in ('metric','date') for i in range(10)]

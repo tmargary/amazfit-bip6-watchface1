@@ -3,6 +3,414 @@
     390,
     450
   ],
+  "analog/battery/0.png": [
+    21,
+    19
+  ],
+  "analog/battery/1.png": [
+    21,
+    19
+  ],
+  "analog/battery/10.png": [
+    21,
+    19
+  ],
+  "analog/battery/100.png": [
+    21,
+    19
+  ],
+  "analog/battery/11.png": [
+    21,
+    19
+  ],
+  "analog/battery/12.png": [
+    21,
+    19
+  ],
+  "analog/battery/13.png": [
+    21,
+    19
+  ],
+  "analog/battery/14.png": [
+    21,
+    19
+  ],
+  "analog/battery/15.png": [
+    21,
+    19
+  ],
+  "analog/battery/16.png": [
+    21,
+    19
+  ],
+  "analog/battery/17.png": [
+    21,
+    19
+  ],
+  "analog/battery/18.png": [
+    21,
+    19
+  ],
+  "analog/battery/19.png": [
+    21,
+    19
+  ],
+  "analog/battery/2.png": [
+    21,
+    19
+  ],
+  "analog/battery/20.png": [
+    21,
+    19
+  ],
+  "analog/battery/21.png": [
+    21,
+    19
+  ],
+  "analog/battery/22.png": [
+    21,
+    19
+  ],
+  "analog/battery/23.png": [
+    21,
+    19
+  ],
+  "analog/battery/24.png": [
+    21,
+    19
+  ],
+  "analog/battery/25.png": [
+    21,
+    19
+  ],
+  "analog/battery/26.png": [
+    21,
+    19
+  ],
+  "analog/battery/27.png": [
+    21,
+    19
+  ],
+  "analog/battery/28.png": [
+    21,
+    19
+  ],
+  "analog/battery/29.png": [
+    21,
+    19
+  ],
+  "analog/battery/3.png": [
+    21,
+    19
+  ],
+  "analog/battery/30.png": [
+    21,
+    19
+  ],
+  "analog/battery/31.png": [
+    21,
+    19
+  ],
+  "analog/battery/32.png": [
+    21,
+    19
+  ],
+  "analog/battery/33.png": [
+    21,
+    19
+  ],
+  "analog/battery/34.png": [
+    21,
+    19
+  ],
+  "analog/battery/35.png": [
+    21,
+    19
+  ],
+  "analog/battery/36.png": [
+    21,
+    19
+  ],
+  "analog/battery/37.png": [
+    21,
+    19
+  ],
+  "analog/battery/38.png": [
+    21,
+    19
+  ],
+  "analog/battery/39.png": [
+    21,
+    19
+  ],
+  "analog/battery/4.png": [
+    21,
+    19
+  ],
+  "analog/battery/40.png": [
+    21,
+    19
+  ],
+  "analog/battery/41.png": [
+    21,
+    19
+  ],
+  "analog/battery/42.png": [
+    21,
+    19
+  ],
+  "analog/battery/43.png": [
+    21,
+    19
+  ],
+  "analog/battery/44.png": [
+    21,
+    19
+  ],
+  "analog/battery/45.png": [
+    21,
+    19
+  ],
+  "analog/battery/46.png": [
+    21,
+    19
+  ],
+  "analog/battery/47.png": [
+    21,
+    19
+  ],
+  "analog/battery/48.png": [
+    21,
+    19
+  ],
+  "analog/battery/49.png": [
+    21,
+    19
+  ],
+  "analog/battery/5.png": [
+    21,
+    19
+  ],
+  "analog/battery/50.png": [
+    21,
+    19
+  ],
+  "analog/battery/51.png": [
+    21,
+    19
+  ],
+  "analog/battery/52.png": [
+    21,
+    19
+  ],
+  "analog/battery/53.png": [
+    21,
+    19
+  ],
+  "analog/battery/54.png": [
+    21,
+    19
+  ],
+  "analog/battery/55.png": [
+    21,
+    19
+  ],
+  "analog/battery/56.png": [
+    21,
+    19
+  ],
+  "analog/battery/57.png": [
+    21,
+    19
+  ],
+  "analog/battery/58.png": [
+    21,
+    19
+  ],
+  "analog/battery/59.png": [
+    21,
+    19
+  ],
+  "analog/battery/6.png": [
+    21,
+    19
+  ],
+  "analog/battery/60.png": [
+    21,
+    19
+  ],
+  "analog/battery/61.png": [
+    21,
+    19
+  ],
+  "analog/battery/62.png": [
+    21,
+    19
+  ],
+  "analog/battery/63.png": [
+    21,
+    19
+  ],
+  "analog/battery/64.png": [
+    21,
+    19
+  ],
+  "analog/battery/65.png": [
+    21,
+    19
+  ],
+  "analog/battery/66.png": [
+    21,
+    19
+  ],
+  "analog/battery/67.png": [
+    21,
+    19
+  ],
+  "analog/battery/68.png": [
+    21,
+    19
+  ],
+  "analog/battery/69.png": [
+    21,
+    19
+  ],
+  "analog/battery/7.png": [
+    21,
+    19
+  ],
+  "analog/battery/70.png": [
+    21,
+    19
+  ],
+  "analog/battery/71.png": [
+    21,
+    19
+  ],
+  "analog/battery/72.png": [
+    21,
+    19
+  ],
+  "analog/battery/73.png": [
+    21,
+    19
+  ],
+  "analog/battery/74.png": [
+    21,
+    19
+  ],
+  "analog/battery/75.png": [
+    21,
+    19
+  ],
+  "analog/battery/76.png": [
+    21,
+    19
+  ],
+  "analog/battery/77.png": [
+    21,
+    19
+  ],
+  "analog/battery/78.png": [
+    21,
+    19
+  ],
+  "analog/battery/79.png": [
+    21,
+    19
+  ],
+  "analog/battery/8.png": [
+    21,
+    19
+  ],
+  "analog/battery/80.png": [
+    21,
+    19
+  ],
+  "analog/battery/81.png": [
+    21,
+    19
+  ],
+  "analog/battery/82.png": [
+    21,
+    19
+  ],
+  "analog/battery/83.png": [
+    21,
+    19
+  ],
+  "analog/battery/84.png": [
+    21,
+    19
+  ],
+  "analog/battery/85.png": [
+    21,
+    19
+  ],
+  "analog/battery/86.png": [
+    21,
+    19
+  ],
+  "analog/battery/87.png": [
+    21,
+    19
+  ],
+  "analog/battery/88.png": [
+    21,
+    19
+  ],
+  "analog/battery/89.png": [
+    21,
+    19
+  ],
+  "analog/battery/9.png": [
+    21,
+    19
+  ],
+  "analog/battery/90.png": [
+    21,
+    19
+  ],
+  "analog/battery/91.png": [
+    21,
+    19
+  ],
+  "analog/battery/92.png": [
+    21,
+    19
+  ],
+  "analog/battery/93.png": [
+    21,
+    19
+  ],
+  "analog/battery/94.png": [
+    21,
+    19
+  ],
+  "analog/battery/95.png": [
+    21,
+    19
+  ],
+  "analog/battery/96.png": [
+    21,
+    19
+  ],
+  "analog/battery/97.png": [
+    21,
+    19
+  ],
+  "analog/battery/98.png": [
+    21,
+    19
+  ],
+  "analog/battery/99.png": [
+    21,
+    19
+  ],
+  "analog/battery/unknown.png": [
+    21,
+    19
+  ],
   "analog/celsius.png": [
     29,
     30
@@ -226,6 +634,10 @@
   "analog/second-awake.png": [
     7,
     158
+  ],
+  "analog/tap.png": [
+    1,
+    1
   ],
   "analog/weather/cloud.png": [
     30,

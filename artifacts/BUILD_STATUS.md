@@ -1,4 +1,60 @@
-# Verification — 2026-11-14
+# Verification — 2026-11-17
+
+## Battery fill, version 0.5.8
+
+- Generated 101 charge-level battery icons plus an unavailable dash icon, all
+  within the existing 21 x 19 footprint. The sample preview uses a 75% fill
+  alongside its 75% reading.
+- watchface/battery.js reads documented BATTERY.current, refreshes on build,
+  resume and CHANGE events, and suppresses writes while paused/destroyed.
+  No timers or new runtime API minimum. The text remains natively bound.
+- Host checks cover charge endpoints/intermediate values, missing/invalid data,
+  monotonic fill, full MORE geometry, pause/resume/destroy, and package resources.
+- Full macOS build and version 0.5.8 package audit passed. Device event delivery
+  and icon/text synchronization still need physical-watch validation.
+
+## Matching AOD hand thickness, version 0.5.7
+
+- Restored identical hour/minute stroke geometry in awake and AOD assets:
+  8.4 px hour blade, 10 px minute outline with a 5 px transparent slot.
+  AOD remains dim with no seconds hand; pivots and resource dimensions remain.
+- Restored pixel-by-pixel alpha-mask equality checks for both hour/minute pairs.
+- Regenerated assets and previews, visually checked the comparison, and passed
+  the full macOS build, host checks and actual version 0.5.7 package audit.
+  Physical-device validation remains outstanding.
+
+## Restored shortcuts, version 0.5.6
+
+- Restored watchface/shortcuts.js from 8c06d3c and integrated it with the current
+  corner layout. Steps, battery, weather and optional heart/calorie fields use
+  native IMG_CLICK bindings. The date uses the historical isolated calendar
+  handler. All hit regions are transparent, awake-only and created last.
+- Restored shortcut geometry/configuration/launch regression checks; extended
+  them for calendar widget creation failures, reordered metrics and missing
+  native action enums. Optional failures leave the clock available.
+- Normal macOS build and actual package audit passed for version 0.5.6,
+  including the packaged transparent tap resource and legacy runtime bootstrap.
+  Zeus skips conversion of the 1 x 1 tap PNG; the audit confirms it is packaged.
+- Calendar routing remains firmware-dependent. This build has not been
+  installed or tested on a physical watch.
+
+## macOS build support, version 0.5.5
+
+- Added a standard-library Core Text/Core Graphics font renderer for macOS.
+  It uses installed Helvetica Neue at 90% horizontal scale to preserve existing
+  glyph cell dimensions. Windows keeps the original Segoe UI/GDI renderer.
+- npm scripts select Python 3 through tools/python.cjs. Zeus CLI 1.10.0 is
+  a pinned local development dependency with a package lock.
+- Full `npm run build` passed on macOS with Node 26.13.1 and Python 3.15.2:
+  asset generation, host validation, Zeus compilation and actual package audit.
+- Generated `dist/1000000-Bip_6_Still-0.5.5-20261117012850.zab`; audit confirmed
+  version 0.5.5, legacy API minimum 1.0, WidgetFactory bootstrap and resources.
+- Visually inspected regenerated awake/AOD previews. This is not device testing;
+  QR installation and physical Bip 6 rendering still need user verification.
+- The sandbox required permission for npm downloads and Zeus's ~/.zepp directory.
+  The Windows startup failures recorded below are historical, not Mac failures.
+
+# Earlier verification — 2026-11-14
 
 ## Temperature headroom and larger icons, version 0.5.5
 

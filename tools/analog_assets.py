@@ -82,13 +82,13 @@ def draw_hand(art, kind, transform, asleep):
         art.circle(x,y,2.4,SECOND_RED)
         art.circle(x,y,1.0,(0,0,0,0))
     elif kind == 'hour':
-        stroke([(0,0),(0,-20)],2.6 if asleep else 3.8)
-        stroke([(0,-13),(0,-86)],4.2 if asleep else 8.4)
+        stroke([(0,0),(0,-20)],3.8)
+        stroke([(0,-13),(0,-86)],8.4)
     else:
-        stroke([(0,0),(0,-22)],2.2 if asleep else 3.0)
-        stroke([(0,-18),(0,-126)],6.4 if asleep else 10.0)
+        stroke([(0,0),(0,-22)],3.0)
+        stroke([(0,-18),(0,-126)],10.0)
         # Transparent slot, so the hour hand/dial remains visible underneath.
-        stroke([(0,-23),(0,-121)],2.4 if asleep else 5.0,(0,0,0,0))
+        stroke([(0,-23),(0,-121)],5.0,(0,0,0,0))
 
 
 def draw_hub(art,x,y,asleep):
@@ -152,7 +152,7 @@ def make_weather_icon(name):
     return icon.resized(30,26)
 
 
-def make_icon(name):
+def make_icon(name, battery_percent=None):
     icon = Art(18,16)
     color = ICON_COLORS[name]
     if name == 'DATE':
@@ -169,7 +169,10 @@ def make_icon(name):
     elif name == 'BATTERY':
         icon.line([(2,4),(14,4),(14,12),(2,12),(2,4)],1.4,color)
         icon.line([(16,6),(16,10)],1.4,color)
-        # Static outline identifies battery; the native percentage supplies status.
+        if battery_percent is not None:
+            # Same interior and silhouette for generated resources and previews.
+            width = round(8 * SCALE * battery_percent / 100)
+            icon.canvas.rect(4*SCALE,6*SCALE,width,4*SCALE,color)
     elif name == 'WEATHER_CURRENT':
         icon.line([(8,10),(8,3),(9,2),(10,3),(10,10)],1.4,color)
         icon.circle(9,11,2.8,color)
@@ -218,7 +221,7 @@ def main():
             preview.text('AUG',71,38,12,color=ACCENT)
             preview.text('14',42,59,26)
             for name,x,y in [('STEP',42,378),('BATTERY',327,378)]:
-                preview.canvas.paste(make_icon(name).canvas,x*SCALE,y*SCALE)
+                preview.canvas.paste(make_icon(name,75 if name == 'BATTERY' else None).canvas,x*SCALE,y*SCALE)
             preview.canvas.paste(make_weather_icon('partly-cloudy').canvas,318*SCALE,31*SCALE)
             preview.text('8670',42,402,22)
             preview.text('75%',348,402,22,align='right')
@@ -227,8 +230,15 @@ def main():
         previews[style].save(ROOT/'artifacts'/f'preview-{style}.png')
     background=Art(390,450,black=True)
     background.save('background.png')
+    # Explicit widget bounds define the tap area; the image stays invisible.
+    Canvas(1,1).save(OUT/'tap.png')
     for name in ['DATE','STEP','BATTERY','WEATHER_CURRENT','HEART','CAL']:
         make_icon(name).save(f'icons/{name}.png')
+    for percent in range(101):
+        make_icon('BATTERY',percent).save(f'battery/{percent}.png')
+    unavailable=make_icon('BATTERY')
+    unavailable.line([(8,9.5),(11,9.5)],1.2,ICON_COLORS['BATTERY'])
+    unavailable.save('battery/unknown.png')
     weather_names=['sun','moon','partly-cloudy','cloud','rain','snow','storm','sleet',
                    'hail','fog','dust','unknown','moon-cloud','moon-rain']
     for name in weather_names:

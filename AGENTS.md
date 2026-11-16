@@ -50,8 +50,11 @@ Verified against official documentation on 2026-11-14:
   neutral white hands, a thicker rounded hour hand, orange month/center accents,
   real Segoe UI numerals, and subtle coral/green/blue complication icons.
   AOD is monochrome and dim. Keep colors out of AOD and retain the existing
-  footprint/pivots when changing stroke weights. The static battery outline is
-  an identifier, not a charge gauge; only the native percentage indicates charge.
+  footprint/pivots when changing stroke weights. Battery icons now use generated
+  0..100 fill images driven by documented BATTERY.current and CHANGE events.
+  Refresh on build/resume, suppress updates on pause/destroy; no polling in AOD.
+  Invalid battery readings use the unavailable dash, distinct from empty charge.
+  Keep the 21 x 19 icon footprint and native percentage text binding.
 - Awake details sit outside the full hand sweep in four corners: month/day at
   upper left, temperature at upper right, steps at lower left, battery at lower
   right. Use only icons, not TEMP/STEPS/BATTERY text labels. Heart rate/calories can
@@ -103,9 +106,12 @@ Verified against official documentation on 2026-11-14:
   extent while staying outside the complete hand sweep.
 - tools/analog_assets.py generates supersampled original hands, dots and icons.
   tools/system_font.py rasterizes installed Segoe UI through Windows GDI using
-  ctypes. No font file is copied into the project. Asset generation requires
-  Windows and installed Segoe UI; it has no Pillow dependency or hand-drawn font
-  fallback. Font cell clipping is checked during generation. These scripts use
+  ctypes. On macOS it dispatches to tools/mac_font.py, which uses Core Text and
+  installed Helvetica Neue with a fixed 90% horizontal scale to fit existing
+  cells. Platform typography differs; no font file is copied into the project.
+  Both platforms have no Pillow dependency or hand-drawn font fallback.
+  tools/python.cjs selects Python 3 for npm scripts on either platform.
+  Font cell clipping is checked during generation. These scripts use
   Python standard library only and are called by the main asset generator.
   Keep pivots and dimensions in sync
   with clock.js; hand rotation must never reach the date or footer.

@@ -13,26 +13,47 @@ Slightly thicker hands and dots, rendered with 4x supersampling, improve visibil
 Larger corner icons include a calendar beside the month. Padded digit/unit assets
 and taller widgets protect the temperature and other readings from edge clipping.
 
-The refined visual style uses real Segoe UI numerals, an orange month/center accent,
+The refined visual style uses system-font numerals, an orange month/center accent,
 and icon-only complications. Rounded hands have a circular hub and transparent
-hollow minute blade. AOD stays dim and monochrome.
+hollow minute blade. AOD stays dim and monochrome, with the same hour/minute
+hand thickness and hollow silhouette as awake mode.
+The battery icon fills proportionally to the sensor percentage, updates on
+battery changes/resume while awake, and displays a dash for unavailable data.
 
 Python generates antialiased assets; JavaScript uses documented native Zepp watch
 face bindings. No Python dependencies or runtime npm libraries. Typography is
-rasterized from installed Segoe UI using Windows GDI; regeneration requires
-Windows and that font. Font files are not bundled.
+rasterized from installed Segoe UI using Windows GDI on Windows, or Helvetica
+Neue using Core Text on macOS. Mac glyphs use a fixed 90% horizontal scale to fit
+the same cells; the typography differs slightly between platforms. Font files
+are not bundled. Both renderers use only Python's standard library.
 
-```powershell
-python tools/generate_assets.py
-node tools/validate.cjs
+Install Node.js and Python 3, then run from the repository root on macOS or Windows:
+
+```sh
+npm install
 npm run build
-npm run audit:package
+npm run preview
 ```
+
+The project installs Zeus locally. The build selects `python3` on macOS or
+`python` on Windows, regenerates assets, runs host checks, builds the ZAB, and
+audits the package. After it succeeds, `npm run preview` displays the QR code
+for the Zepp app's developer-mode scanner. `npm run assets` and
+`npm run audit:package` can also run separately. Host checks do not establish
+physical-device rendering correctness.
 
 Change watchface/config.js to select minimal or airy, reorder the three readings,
 or disable date/AOD. HEART and CAL can replace a reading. Rebuild after changes.
 Set secondHand to false to hide the awake seconds hand.
 This is not on-watch customization. Animation remains available but off by default.
+
+Tap a metric's icon or reading to request its native app (steps, battery, weather,
+or configured heart rate/calories). Tap the date/calendar area to request the
+calendar. Set `shortcuts: false` to disable all tap actions or
+`calendarShortcut: false` to disable only the calendar. All taps are awake-only.
+The calendar route is restored from the earlier implementation and is
+community-published, firmware-dependent, and still needs Bip 6 testing:
+https://github.com/orgs/zepp-health/discussions/161
 
 See artifacts/preview-comparison.png for awake (left) and AOD (right). Sample
 preview data is illustrative; the watch uses its native current time and data.
